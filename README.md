@@ -83,9 +83,7 @@ experiments on sample images, we fixed and applied a linear scaling transformati
 parameter set at α=2.0. The specific weight vector for each image is then calculated using
 
 <div align="centre">
-
   Wi = 1.0 + (α * mean_glare_intensity)
-
 </div>
 
 During the forward pass, these images are mapped to the bounding boxes loss calculation. The standard
@@ -157,7 +155,7 @@ improve robustness.
 We used YOLOv8n as the base architecture. The model has small lightweight parameters that is suitable to
 run on the resource constrained environments where GPU availability is restricted. We conducted the
 experiment using standard YOLO settings for training so as to keep the models comparable with standard
-model using “ auto ” optimiser the model selected learning rate of 0.0 000909 and momentum of 0.
+model using “ auto ” optimiser the model selected learning rate of 0.0000909 and momentum of 0.9
 automatically during all training overriding default lr0 and momentum settings. We used the YOLO’s inbuilt
 “ Letterboxing ” technique to resize images to 640X640. This helped us to maintain the aspect ratio of original
 image while reducing image size. This was specifically chosen as smaller image size would mean more harder
