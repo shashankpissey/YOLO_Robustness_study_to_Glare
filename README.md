@@ -45,7 +45,11 @@ reduces radially towards its circumference as shown in [ 6 ]. For this study, we
 Gaussian function which captures the radial characteristics of glare like real world scenarios. The simulated
 glare f(x,y) at any pixel location (x,y) in an image is given by
 
-![alt text](./docs/image.png)
+<div align="centre">
+
+  ![alt text](./docs/image.png)
+
+</div> 
 
 We planned to mimic the real-world scenario by restricting the placement of glare centre (x 0 , y 0 ) to be
 between 50-90% of the height of image in bottom half as this is realistic position of headlight from oncoming
@@ -54,7 +58,11 @@ extreme glare cases as observed. We used white overlay as the recent models of v
 white LEDs for headlights. In order to avoid the YOLOv8 model learning the glare as a fixed spatial noise, the
 horizontal position along the width is also varied for each image between 20-80% of image width.
 
+<div align="centre">
+
 ![alt text](./docs/sample.png)
+
+</div>
 
 Custom Loss
 
@@ -63,21 +71,34 @@ and augmented images with the same weight. In order to have higher penalty for f
 augmented images, this custom loss function is used. We use the same YOLO architecture and inject weight
 to the loss component [Fig. 3]
 
+<div align="centre">
+
 ![alt text](./docs/architecture.png)
+
+</div>
 
 The custom loss function uses the brightness intensity of image to dynamically scale the loss penalty.
 Intensity is calculated in bottom half of all images similar to how artificial glare is applied. After running
 experiments on sample images, we fixed and applied a linear scaling transformation using a predefined
 parameter set at α=2.0. The specific weight vector for each image is then calculated using
 
+<div align="centre">
+
 Wi = 1.0 + (α * mean_glare_intensity)
+
+</div>
+
 During the forward pass, these images are mapped to the bounding boxes loss calculation. The standard
 YOLO loss is calculated using the default YOLO loss function and finally the batch loss is multiplied by the
 mean of target weights for the entire batch without altering the feature extraction. Thereby if batch has
 augmented image and the object is not detected, the mean weight will be higher that makes sure to penalise
 the misclassification for batches containing glare with higher loss penalty.
 
+<div align="centre">
+
 Loss custom = Loss yolo * W mean
+
+</div>
 
 # Methodology- Coding Algorithm
 We employed standard machine learning for computer vision pipeline to train and evaluate. In order to have
@@ -86,8 +107,10 @@ reproducibility and to have a controlled experimental setup, the process was spl
 *Preprocessing*: This is a one-time activity that is performed at the start of experiment which involves
 steps to download, pre-process, filter the images, convert the labels to YOLO readable format, apply
 augmentation, save and store it persistently to be reused across all the experiment.
+
 *Model Training and Evaluation:* This has the main steps of implementation of the training and
 evaluation pipeline.
+
 The code was initially developed by me on T4 GPU version of Colab Free tier and assistance from Generative
 AI was used to support debugging errors especially on the custom loss function to resolve device consistency
 issues between CPU and CUDA tensors experienced during validation. Assistance was also used to optimise
@@ -194,7 +217,7 @@ Testing on glare augmented images we observed, the mAP50 of baseline model dropp
 
 <div align="centre">
 
-![alt text](image.png)
+![alt text](./docs/per_class.png)
 
 *Per-class mAP50 across both test dataset*
 
@@ -233,3 +256,20 @@ The results obtained can be used for wider research and development to extend it
 The study we performed was to evaluate the robustness of object detection using the YOLOv8 model to nighttime glare augmented images. We conducted experiments of 3 different models- baseline, augmentation aware, and custom loss model across clean and augmented test images. From the result, it could be inferred that introduction of augmented images in training had less impact on models performance on clean images showing that the 25% augmentation only in training set strategy helped model in generalisation. On the augmented images, we observed that the baseline model performs significantly lower (27.3%) whereas the both glare aware model and custom loss model showed lower degradation (~10%). This shows that training time augmentation can be used as one of the effective and computationally low-cost strategy to improve robustness without the need for hardware modifications or architectural changes which are predominantly used and researched currently.
 The introduction of custom loss function showed marginal benefit over the augmentation aware model, but we observed that it captured vulnerable road user classes like rider, pedestrians behind the glare that were missed by the other models on many occasions. The small difference shown in performance could be limited by the number of epochs trained, where additional epochs could have had more influence on the learning. This suggests that the weighted loss approach with training time augmentation may be more beneficial for safety of vulnerable road users even with marginal overall improvement of mAP50. We observed good convergence across all 3 models over 20 epochs, though none fully plateaued, suggesting further training could improve performance gain. 
 The future work on this could be done to extend the training to a greater number of epochs, considering images having glare representation from real-world scenarios and also to extend it to handling the glare from the sun in morning driving scenarios. This study showed evidence that synthetic glare augmentation is helpful training strategy for improving nighttime object detection and the weighted loss helps improve recall for object detection having glare and is relevant considering the industry trend to move towards camera-only autonomous driving systems deployed in real-world scenario.
+
+
+References 
+[1] Learning to Control Camera Exposure via Reinforcement Learning, Kyunghyun Lee and Ukcheol Shin and Byeong-Uk Lee, 2024, https://arxiv.org/abs/2404.01636 
+[2] How to deal with glare for improved perception of Autonomous Vehicles, Muhammad Z. Alam and Zeeshan Kaleem and Sousso Kelouwani. 2024. https://arxiv.org/abs/2404.10992
+[3] Practical assessment of veiling glare in camera lens system, Ivana Tomić, Igor Karlović, Ivana Jurič. 2014. https://pdfs.semanticscholar.org/d49f/7457e84f42ab583ffa83f342bed723440191.pdf 
+[4] Getting to know low-light images with the Exclusively Dark dataset. Computer Vision and Image Understanding. Loh, Yuen Peng & Chan, Chee Seng. 2018. https://arxiv.org/pdf/1805.11227
+[5] BDD100K: A Diverse Driving Dataset for Heterogeneous Multitask Learning. Yu, Fisher & Chen, Haofeng & Xian, Wenqi & Chen, Yingying & Liu, Fangchen & Madhavan, Vashisht & Darrell, Trevor. 2020. https://arxiv.org/pdf/1805.04687. Dataset link http://bdd-data.berkeley.edu/download.html 
+[6] Data-Driven Headlight Flare Model for Automative Cameras BODA. Li, Hetian Wang, Yiting Wang, Pak Hung Chan, Darryl Perks and Valentina Donzella. 2025. https://ieeexplore.ieee.org/document/11134042
+[7] Benchmarking Neural Network Robustness to Common Corruptions and Perturbations. Hendrycks, Dan and Thomas G. Dietterich. 2019. https://arxiv.org/pdf/1903.12261
+[8] Importance of Adaptive Photometric Augmentation for Different Convolutional Neural Network. Saraswathi Sivamani, Sun Il Chon, Do Yeon Choi, Dong Hoon Lee, Ji Hwan Park. 2022. https://doi.org/10.32604/cmc.2022.026759
+[9] Learning to Reweight Examples for Robust Deep Learning, Mengye Ren and Wenyuan Zeng and Bin Yang and Raquel Urtasun. 2019. https://arxiv.org/abs/1803.09050
+[10] PyQt5-powered frontend for advanced YOLOv8 vehicle detection in challenging backgrounds. Sun, Fucai and Du, Liping and Dai, Yantao. 2025. https://doi.org/10.1049/wss2.70001
+[11] https://www.gov.uk/government/publications/responsible-innovation-in-self-driving-vehicles/responsible-innovation-in-self-driving-vehicles
+[12] Geiger, A., Lenz, P., & Urtasun, R. (2012). Are we ready for autonomous driving? The KITTI vision benchmark suite. 2012. https://www.cvlibs.net/datasets/kitti/
+[13] Focal Loss for Dense Object Detection. Lin, Tsung-Yi & Goyal, Priyal & Girshick, Ross & He, Kaiming & Dollar, Piotr. 2018. https://arxiv.org/pdf/1708.02002
+
