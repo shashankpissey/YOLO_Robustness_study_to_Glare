@@ -1,0 +1,14 @@
+path: /content/Assignment/content/Assignment/Data/bdd_100k
+
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: person
+  1: car
+  2: bus
+  3: truck
+  4: bicycle
+  5: motorcycle
+  6: rider
