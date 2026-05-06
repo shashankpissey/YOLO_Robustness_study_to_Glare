@@ -259,6 +259,7 @@ The future work on this could be done to extend the training to a greater number
 
 
 References 
+
 [1] Learning to Control Camera Exposure via Reinforcement Learning, Kyunghyun Lee and Ukcheol Shin and Byeong-Uk Lee, 2024, https://arxiv.org/abs/2404.01636
 
 [2] How to deal with glare for improved perception of Autonomous Vehicles, Muhammad Z. Alam and Zeeshan Kaleem and Sousso Kelouwani. 2024. https://arxiv.org/abs/2404.10992
