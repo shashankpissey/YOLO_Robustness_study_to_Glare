@@ -59,8 +59,8 @@ white LEDs for headlights. In order to avoid the YOLOv8 model learning the glare
 horizontal position along the width is also varied for each image between 20-80% of image width.
 
 <div align="centre">
-
-![alt text](./docs/sample.png)
+  
+  ![alt text](./docs/sample.png)
 
 </div>
 
@@ -73,7 +73,7 @@ to the loss component [Fig. 3]
 
 <div align="centre">
 
-![alt text](./docs/architecture.png)
+  ![alt text](./docs/architecture.png)
 
 </div>
 
@@ -84,7 +84,7 @@ parameter set at α=2.0. The specific weight vector for each image is then calcu
 
 <div align="centre">
 
-Wi = 1.0 + (α * mean_glare_intensity)
+  Wi = 1.0 + (α * mean_glare_intensity)
 
 </div>
 
@@ -96,7 +96,7 @@ the misclassification for batches containing glare with higher loss penalty.
 
 <div align="centre">
 
-Loss custom = Loss yolo * W mean
+  Loss custom = Loss yolo * W mean
 
 </div>
 
@@ -108,7 +108,7 @@ reproducibility and to have a controlled experimental setup, the process was spl
 steps to download, pre-process, filter the images, convert the labels to YOLO readable format, apply
 augmentation, save and store it persistently to be reused across all the experiment.
 
-*Model Training and Evaluation:* This has the main steps of implementation of the training and
+*Model Training and Evaluation*: This has the main steps of implementation of the training and
 evaluation pipeline.
 
 The code was initially developed by me on T4 GPU version of Colab Free tier and assistance from Generative
@@ -178,18 +178,18 @@ based on detection using precision, recall and mean average precision at interse
 # Results
 The result of mAP50, precision, and recall for the three different models on clean and glare test dataset.
 
-<div align="centre">
+<div align="centre">  
   
-| Model | Test dataset | mAP50 | Precision | Recall |
-| :--- | :--- | :--- | :--- | :--- |
-| **Baseline (M1)** | Clean | 0.473 | 0.615 | 0.418 |
-| **Baseline (M1)** | Glare | 0.344 | 0.518 | 0.332 |
-| **Augmentation (M2)** | Clean | 0.468 | 0.61 | 0.419 |
-| **Augmentation (M2)** | Glare | 0.419 | 0.573 | 0.382 |
-| **Custom Loss (M3)** | Clean | 0.465 | 0.595 | 0.424 |
-| **Custom Loss (M3)** | Glare | 0.417 | 0.577 | 0.383 |
-
-*Table 2: Performance metrics across 3 models*
+  | Model | Test dataset | mAP50 | Precision | Recall |
+  | :--- | :--- | :--- | :--- | :--- |
+  | **Baseline (M1)** | Clean | 0.473 | 0.615 | 0.418 |
+  | **Baseline (M1)** | Glare | 0.344 | 0.518 | 0.332 |
+  | **Augmentation (M2)** | Clean | 0.468 | 0.61 | 0.419 |
+  | **Augmentation (M2)** | Glare | 0.419 | 0.573 | 0.382 |
+  | **Custom Loss (M3)** | Clean | 0.465 | 0.595 | 0.424 |
+  | **Custom Loss (M3)** | Glare | 0.417 | 0.577 | 0.383 |
+  
+  *Table 2: Performance metrics across 3 models*
 
 </div>
 
@@ -197,29 +197,29 @@ We observed 1% training-accuracy tradeoff on clean images showing that replacing
 
 <div align="centre">
   
-![alt text](./docs/result.png)
-
-*Fig. 5 Loss and mAP50 curves*
+  ![alt text](./docs/result.png)
+  
+  *Fig. 5 Loss and mAP50 curves*
 
 </div>
 
 From the training curve for the 20 epochs [Fig. 5] we observe steady approaching convergence with no signs of overfitting and training box loss is close to each other and validation box loss curve almost overlapping each other. The training box loss for M1 is slightly lower than that of M2 and M3, which is expected considering they were trained on harder sets of glare augmented images and the validation box loss is almost overlapping. We observed that the mAP50 curve is consistently improving with no model plateauing at the end of 20 epochs. This suggests that it could further improve with a greater number of epochs provided with no hardware constraints.
 
 <div align="centre">
-
-![alt text](./docs/change.png)
-
-*Percentage change in mAP50 on glare test images*
+  
+  ![alt text](./docs/change.png)
+  
+  *Percentage change in mAP50 on glare test images*
 
 </div>
 
 Testing on glare augmented images we observed, the mAP50 of baseline model dropped significantly by 27.3% from 0.473 to 0.344. The augmented model M2 and custom loss model M3 show reduced degradation to 10.5% and 10.3% respectively, showing that the training time augmentation helped improve the robustness of model to glare [Fig. 6]. 
 
 <div align="centre">
-
-![alt text](./docs/per_class.png)
-
-*Per-class mAP50 across both test dataset*
+  
+  ![alt text](./docs/per_class.png)
+  
+  *Per-class mAP50 across both test dataset*
 
 </div>
 
@@ -228,16 +228,16 @@ We observe that on the clean images all the 3 models performed similarly across 
 The precision-recall curve [Fig. 8] confirms the above findings, and we observe that the car class is strongest and rider is the weakest class which is consistent with the class imbalance in the filtered subset. 
 
 <div align="centre">
-
-![alt text](./docs/PR-Curve.png)
+  
+  ![alt text](./docs/PR-Curve.png)
 
 </div>
 
 # Qualitative Result
 
 <div align="centre">
-
-![alt text](./docs/Qualitative.png)
+  
+  ![alt text](./docs/Qualitative.png)
 
 </div>
 
@@ -259,17 +259,28 @@ The future work on this could be done to extend the training to a greater number
 
 
 References 
-[1] Learning to Control Camera Exposure via Reinforcement Learning, Kyunghyun Lee and Ukcheol Shin and Byeong-Uk Lee, 2024, https://arxiv.org/abs/2404.01636 
-[2] How to deal with glare for improved perception of Autonomous Vehicles, Muhammad Z. Alam and Zeeshan Kaleem and Sousso Kelouwani. 2024. https://arxiv.org/abs/2404.10992
-[3] Practical assessment of veiling glare in camera lens system, Ivana Tomić, Igor Karlović, Ivana Jurič. 2014. https://pdfs.semanticscholar.org/d49f/7457e84f42ab583ffa83f342bed723440191.pdf 
-[4] Getting to know low-light images with the Exclusively Dark dataset. Computer Vision and Image Understanding. Loh, Yuen Peng & Chan, Chee Seng. 2018. https://arxiv.org/pdf/1805.11227
-[5] BDD100K: A Diverse Driving Dataset for Heterogeneous Multitask Learning. Yu, Fisher & Chen, Haofeng & Xian, Wenqi & Chen, Yingying & Liu, Fangchen & Madhavan, Vashisht & Darrell, Trevor. 2020. https://arxiv.org/pdf/1805.04687. Dataset link http://bdd-data.berkeley.edu/download.html 
-[6] Data-Driven Headlight Flare Model for Automative Cameras BODA. Li, Hetian Wang, Yiting Wang, Pak Hung Chan, Darryl Perks and Valentina Donzella. 2025. https://ieeexplore.ieee.org/document/11134042
-[7] Benchmarking Neural Network Robustness to Common Corruptions and Perturbations. Hendrycks, Dan and Thomas G. Dietterich. 2019. https://arxiv.org/pdf/1903.12261
-[8] Importance of Adaptive Photometric Augmentation for Different Convolutional Neural Network. Saraswathi Sivamani, Sun Il Chon, Do Yeon Choi, Dong Hoon Lee, Ji Hwan Park. 2022. https://doi.org/10.32604/cmc.2022.026759
-[9] Learning to Reweight Examples for Robust Deep Learning, Mengye Ren and Wenyuan Zeng and Bin Yang and Raquel Urtasun. 2019. https://arxiv.org/abs/1803.09050
-[10] PyQt5-powered frontend for advanced YOLOv8 vehicle detection in challenging backgrounds. Sun, Fucai and Du, Liping and Dai, Yantao. 2025. https://doi.org/10.1049/wss2.70001
-[11] https://www.gov.uk/government/publications/responsible-innovation-in-self-driving-vehicles/responsible-innovation-in-self-driving-vehicles
-[12] Geiger, A., Lenz, P., & Urtasun, R. (2012). Are we ready for autonomous driving? The KITTI vision benchmark suite. 2012. https://www.cvlibs.net/datasets/kitti/
-[13] Focal Loss for Dense Object Detection. Lin, Tsung-Yi & Goyal, Priyal & Girshick, Ross & He, Kaiming & Dollar, Piotr. 2018. https://arxiv.org/pdf/1708.02002
+[1] Learning to Control Camera Exposure via Reinforcement Learning, Kyunghyun Lee and Ukcheol Shin and Byeong-Uk Lee, 2024, https://arxiv.org/abs/2404.01636
 
+[2] How to deal with glare for improved perception of Autonomous Vehicles, Muhammad Z. Alam and Zeeshan Kaleem and Sousso Kelouwani. 2024. https://arxiv.org/abs/2404.10992
+
+[3] Practical assessment of veiling glare in camera lens system, Ivana Tomić, Igor Karlović, Ivana Jurič. 2014. https://pdfs.semanticscholar.org/d49f/7457e84f42ab583ffa83f342bed723440191.pdf 
+
+[4] Getting to know low-light images with the Exclusively Dark dataset. Computer Vision and Image Understanding. Loh, Yuen Peng & Chan, Chee Seng. 2018. https://arxiv.org/pdf/1805.11227
+
+[5] BDD100K: A Diverse Driving Dataset for Heterogeneous Multitask Learning. Yu, Fisher & Chen, Haofeng & Xian, Wenqi & Chen, Yingying & Liu, Fangchen & Madhavan, Vashisht & Darrell, Trevor. 2020. https://arxiv.org/pdf/1805.04687. Dataset link http://bdd-data.berkeley.edu/download.html 
+
+[6] Data-Driven Headlight Flare Model for Automative Cameras BODA. Li, Hetian Wang, Yiting Wang, Pak Hung Chan, Darryl Perks and Valentina Donzella. 2025. https://ieeexplore.ieee.org/document/11134042
+
+[7] Benchmarking Neural Network Robustness to Common Corruptions and Perturbations. Hendrycks, Dan and Thomas G. Dietterich. 2019. https://arxiv.org/pdf/1903.12261
+
+[8] Importance of Adaptive Photometric Augmentation for Different Convolutional Neural Network. Saraswathi Sivamani, Sun Il Chon, Do Yeon Choi, Dong Hoon Lee, Ji Hwan Park. 2022. https://doi.org/10.32604/cmc.2022.026759
+
+[9] Learning to Reweight Examples for Robust Deep Learning, Mengye Ren and Wenyuan Zeng and Bin Yang and Raquel Urtasun. 2019. https://arxiv.org/abs/1803.09050
+
+[10] PyQt5-powered frontend for advanced YOLOv8 vehicle detection in challenging backgrounds. Sun, Fucai and Du, Liping and Dai, Yantao. 2025. https://doi.org/10.1049/wss2.70001
+
+[11] https://www.gov.uk/government/publications/responsible-innovation-in-self-driving-vehicles/responsible-innovation-in-self-driving-vehicles
+
+[12] Geiger, A., Lenz, P., & Urtasun, R. (2012). Are we ready for autonomous driving? The KITTI vision benchmark suite. 2012. https://www.cvlibs.net/datasets/kitti/
+
+[13] Focal Loss for Dense Object Detection. Lin, Tsung-Yi & Goyal, Priyal & Girshick, Ross & He, Kaiming & Dollar, Piotr. 2018. https://arxiv.org/pdf/1708.02002
