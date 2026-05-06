@@ -156,6 +156,7 @@ based on detection using precision, recall and mean average precision at interse
 The result of mAP50, precision, and recall for the three different models on clean and glare test dataset.
 
 <div align="centre">
+  
 | Model | Test dataset | mAP50 | Precision | Recall |
 | :--- | :--- | :--- | :--- | :--- |
 | **Baseline (M1)** | Clean | 0.473 | 0.615 | 0.418 |
@@ -172,6 +173,7 @@ The result of mAP50, precision, and recall for the three different models on cle
 We observed 1% training-accuracy tradeoff on clean images showing that replacing 25% of clean images with glare augmented images during training has not induced catastrophic forgetting on clean images. We see that on clean images, the precision is reduced by 0.8% for M2 when compared to M1 and 3.25% for M3 which is expected due to harder glare augmented images and custom loss function respectively. However, models M2 and M3 (M3>M2>M1) show improvement of over 1% in recall when compared to M1 suggesting they got better at detecting objects. We observe that the precision and recall for glare augmented test images improved for M2 and M3 compared to M1 showing that the training time augmentation helped in overall improvement in performance of model and custom loss model is prioritising the detection sensitivity. Compared to M2, precision and recall for M3 is marginally increased (Precision: 0.573 vs 0.577, Recall: 0.382 vs 0.383) suggesting that even with a decrease in mAP50 custom loss helps to predict right and improve sensitivity over all models. It also suggests that further training for more than 20 epochs could show the higher deviation between M2 and M3. A comparable study [10] used changes to YOLOv8 on full BDD100K dataset using same 7 classes trained for 100 epochs, reported baseline model mAP50 of 0.520. Our baseline achieved 0.473 on night only dataset a difference that is expected for being trained on harder nighttime conditions, reconfirming that the 20 epochs were sufficient to obtain a good baseline for this analysis.
 
 <div align="centre">
+  
 ![alt text](./docs/result.png)
 
 *Fig. 5 Loss and mAP50 curves*
